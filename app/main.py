@@ -5,7 +5,6 @@ from pathlib import Path
 
 from fastapi import Depends, FastAPI
 from fastapi.responses import RedirectResponse
-from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from app.api.routers import auth, empleados, usuarios
@@ -70,6 +69,8 @@ def health(db: Session = Depends(get_db)) -> dict[str, str]:
 # --- Preview frontend (HTML estático). No es el frontend definitivo. ---
 _STATIC_DIR = Path(__file__).parent / "static"
 if _STATIC_DIR.is_dir():
+    from fastapi.staticfiles import StaticFiles
+
     app.mount(
         "/ui",
         StaticFiles(directory=str(_STATIC_DIR), html=True),
